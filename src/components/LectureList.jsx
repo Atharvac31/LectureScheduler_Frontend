@@ -1,10 +1,19 @@
 // src/components/LectureList.jsx
 import React, { useEffect, useState } from "react";
 import API from "../api";
+import { getToken, logout } from "../auth";   // 👈 add this
 
 export default function LectureList({ courseId, refreshKey }) {
   const [lectures, setLectures] = useState([]);
   const [error, setError] = useState(null);
+  const [redirectTo, setRedirectTo] = useState(null);
+
+  // perform navigation from an effect (avoid modifying globals during render)
+  useEffect(() => {
+    if (redirectTo) {
+      window.location.href = redirectTo;
+    }
+  }, [redirectTo]);
 
   // load lectures
   useEffect(() => {
@@ -17,22 +26,44 @@ export default function LectureList({ courseId, refreshKey }) {
         setError(null);
       } catch (err) {
         console.error(err);
+        // if unauthorized -> send to login
+        const status = err?.response?.status;
+        if (status === 401 || status === 403) {
+          alert("Please login to view lectures.");
+          logout();                    // remove token from storage
+          setRedirectTo("/instructor"); // or "/" if you prefer
+          return;
+        }
         setError(err?.response?.data?.error || err?.message);
       }
     })();
-  }, [courseId, refreshKey]); // 👈 include refreshKey
+  }, [courseId, refreshKey]);
 
   // delete lecture by id
   async function handleDelete(id) {
+    // 🔒 require token before attempting delete
+    const token = getToken();
+    if (!token) {
+      alert("Please login to manage lectures.");
+      setRedirectTo("/instructor");  // login page route
+      return;
+    }
+
     const ok = window.confirm("Are you sure you want to delete this lecture?");
     if (!ok) return;
 
     try {
       await API.delete(`/admin/lecture/${id}`);
-      // remove from local state
       setLectures((prev) => prev.filter((lec) => lec._id !== id));
     } catch (err) {
       console.error(err);
+      const status = err?.response?.status;
+      if (status === 401 || status === 403) {
+        alert("Session expired. Please login again.");
+        logout();
+        setRedirectTo("/instructor");
+        return;
+      }
       alert(
         "Failed to delete lecture: " +
           (err?.response?.data?.error || err.message)
