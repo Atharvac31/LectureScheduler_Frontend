@@ -67,7 +67,6 @@ export default function CourseList({ onSelect }) {
                     style={{
                       width: "72px",
                       height: "72px",
-                      objectFit: "cover",
                       borderRadius: "10px",
                       border: "1px solid #d1d5db",
                     }}
