@@ -21,7 +21,7 @@ export default function CourseList({ onSelect }) {
     return () => clearTimeout(timer);
   }, [q]);
 
-  const apiBase = import.meta.env.VITE_API_URL; // e.g. https://lecturescheduler-backend.onrender.com
+  const apiBase = import.meta.env.VITE_API_URL; // get API base URL
 
   return (
     <div className="card">
