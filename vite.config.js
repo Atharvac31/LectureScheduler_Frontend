@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { fileURLToPath } from "url";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
@@ -11,7 +12,21 @@ export default defineConfig({
   resolve: {
     alias: {
       react: path.resolve(__dirname, "node_modules/react"),
-      "react-dom": path.resolve(__dirname, "node_modules/react-dom")
-    }
-  }
+      "react-dom": path.resolve(__dirname, "node_modules/react-dom"),
+    },
+  },
+  build: {
+    rollupOptions: {
+      // ⬇ tell Rollup/Vite not to try bundling Node built-ins
+      external: [
+        "fs",
+        "path",
+        "os",
+        "crypto",
+        "stream",
+        "http",
+        "https",
+      ],
+    },
+  },
 });
