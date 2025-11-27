@@ -17,7 +17,7 @@ export default function CourseList({ onSelect }) {
   }
 
   useEffect(() => {
-    const timer = setTimeout(() => fetchCourses(q), 300);
+    const timer = setTimeout(() => fetchCourses(q), 300); // dynamic search
     return () => clearTimeout(timer);
   }, [q]);
 
@@ -39,7 +39,7 @@ export default function CourseList({ onSelect }) {
         {courses.map((c) => {
           const hasImage = Boolean(c.image);
           const imageUrl = hasImage
-            ? `${apiBase}/uploads/${c.image}`  // 👈 FIX: add /uploads
+            ? `${apiBase}/uploads/${c.image}` // 👈 ALWAYS /uploads here
             : null;
 
           return (
@@ -53,12 +53,14 @@ export default function CourseList({ onSelect }) {
                 gap: "12px",
               }}
             >
+              {/* Thumbnail + placeholder */}
               <div style={{ position: "relative" }}>
                 {hasImage && (
                   <img
                     src={imageUrl}
                     alt={c.name}
                     onError={(e) => {
+                      // if the image URL fails (404 etc), hide img and show placeholder
                       e.target.style.display = "none";
                       e.target.nextSibling.style.display = "flex";
                     }}
@@ -93,6 +95,7 @@ export default function CourseList({ onSelect }) {
                 </div>
               </div>
 
+              {/* Course info */}
               <div style={{ flex: 1 }}>
                 <strong>{c.name}</strong> — <em>{c.level}</em>
                 <div>{c.description}</div>
