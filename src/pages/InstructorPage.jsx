@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
 import InstructorRegisterForm from "../components/InstructorRegisterForm";
+import { useNavigate } from "react-router-dom";
 
 export default function InstructorPage() {
   const [lectures, setLectures] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState(localStorage.getItem("token") || null);
-
+  const navigate = useNavigate();
   // reuse for Refresh button
   async function loadLectures() {
     try {
@@ -55,6 +56,7 @@ export default function InstructorPage() {
       const res = await API.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
       setToken(res.data.token);
+      navigate("/");
     } catch (err) {
       console.error(err);
       alert("Login failed");
