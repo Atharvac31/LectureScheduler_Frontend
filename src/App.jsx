@@ -11,7 +11,7 @@ export default function App(){
       <header className="topbar">
         <h1>Lecture Scheduler</h1>
         <nav>
-          <Link to="/admin">Admin</Link>
+          <Link to="/">Admin</Link>
           <Link to="/instructor">Instructor</Link>
           {token ? <button onClick={() => { logout(); window.location.reload(); }}>Logout</button> : null}
         </nav>
