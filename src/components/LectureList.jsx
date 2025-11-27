@@ -1,19 +1,13 @@
 // src/components/LectureList.jsx
 import React, { useEffect, useState } from "react";
 import API from "../api";
-import { getToken, logout } from "../auth";   // 👈 add this
+import { getToken, logout } from "../auth";
+import { useNavigate } from "react-router-dom";
 
 export default function LectureList({ courseId, refreshKey }) {
   const [lectures, setLectures] = useState([]);
   const [error, setError] = useState(null);
-  const [redirectTo, setRedirectTo] = useState(null);
-
-  // perform navigation from an effect (avoid modifying globals during render)
-  useEffect(() => {
-    if (redirectTo) {
-      window.location.href = redirectTo;
-    }
-  }, [redirectTo]);
+  const navigate = useNavigate();
 
   // load lectures
   useEffect(() => {
@@ -26,26 +20,24 @@ export default function LectureList({ courseId, refreshKey }) {
         setError(null);
       } catch (err) {
         console.error(err);
-        // if unauthorized -> send to login
         const status = err?.response?.status;
         if (status === 401 || status === 403) {
           alert("Please login to view lectures.");
-          logout();                    // remove token from storage
-          setRedirectTo("/instructor"); // or "/" if you prefer
+          logout();
+          navigate("/instructor"); // 👈 SPA navigation, no 404
           return;
         }
         setError(err?.response?.data?.error || err?.message);
       }
     })();
-  }, [courseId, refreshKey]);
+  }, [courseId, refreshKey, navigate]);
 
   // delete lecture by id
   async function handleDelete(id) {
-    // 🔒 require token before attempting delete
     const token = getToken();
     if (!token) {
       alert("Please login to manage lectures.");
-      setRedirectTo("/instructor");  // login page route
+      navigate("/instructor"); // 👈 SPA navigation
       return;
     }
 
@@ -61,7 +53,7 @@ export default function LectureList({ courseId, refreshKey }) {
       if (status === 401 || status === 403) {
         alert("Session expired. Please login again.");
         logout();
-        setRedirectTo("/instructor");
+        navigate("/instructor"); // 👈 SPA navigation
         return;
       }
       alert(
