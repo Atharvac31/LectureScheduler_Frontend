@@ -1,0 +1,349 @@
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; background:#f5f7fb; color:#222; }
+.topbar { display:flex; justify-content:space-between; align-items:center; padding:12px 20px; background: linear-gradient(90deg, #030b53, #2563eb); color:white; }
+.topbar nav a { color:white; margin-right:12px; text-decoration:none; }
+.container { padding:20px; }
+.grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+.card { background:white; padding:16px; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.08); margin-bottom:12px; }
+.list { list-style:none; padding:0; margin:0; }
+.list-item { padding:8px 0; border-bottom:1px solid #eee; display:flex; justify-content:space-between; }
+.assignment-row { display:flex; gap:8px; align-items:center; margin-bottom:8px;}
+input, textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:4px; }
+button { padding:8px 12px; border:none; background:#0b5fff; color:white; border-radius:4px; cursor:pointer; }
+button:hover { opacity:0.95; }
+.message.error { color:#b00020; }
+.message.success { color: #007a3d; }
+/* ====== Base ====== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #eef2f7;
+  color: #111827;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+/* ====== Top bar ====== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  background: linear-gradient(90deg, #030b53, #2563eb);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 0.03em;
+}
+
+.topbar nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.topbar nav a {
+  color: #e5edff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  position: relative;
+}
+
+.topbar nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  transition: width 0.2s ease;
+}
+
+.topbar nav a:hover::after {
+  width: 100%;
+}
+
+.topbar button {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: transparent;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.topbar button:hover {
+  background: #fff;
+  color: #1d4ed8;
+}
+
+/* ====== Layout ====== */
+.container {
+  max-width: 1180px;
+  margin: 22px auto 32px;
+  padding: 0 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+  gap: 20px;
+}
+
+/* Stack on smaller screens */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ====== Cards ====== */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  border: 1px solid #e5e7eb;
+}
+
+.card h2,
+.card h3 {
+  margin: 0 0 12px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ====== Inputs & forms ====== */
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 8px;
+}
+
+label input,
+label textarea,
+label select {
+  margin-top: 4px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+  background: #f9fafb;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+  background: #fff;
+}
+
+textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+/* Search row */
+.card > div > input[type="text"],
+.card > div > input:not([type]),
+.card > div > input[placeholder="Search"] {
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+/* ====== Buttons ====== */
+button {
+  appearance: none;
+  border: none;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  font-size: 14px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease,
+    background 0.12s ease;
+}
+
+button:hover {
+  background: #1d4ed8;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+button.danger-btn {
+  background: #ef4444;
+}
+
+button.danger-btn:hover {
+  background: #dc2626;
+}
+
+/* ====== Lists (courses, lectures, instructors) ====== */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-item {
+  padding: 10px 4px 10px 0;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-item:hover {
+  background: #f9fafb;
+}
+
+/* ====== Course rows (we used flex inline; polish here) ====== */
+.list-item img {
+  flex-shrink: 0;
+}
+
+/* ====== Messages ====== */
+.message {
+  margin-bottom: 10px;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.message.error {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.message.success {
+  background: #ecfdf3;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+/* ====== Misc ====== */
+.assignment-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.assignment-row input {
+  flex: 1;
+}
+
+small {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.hidden {
+  display: none;
+}
+
+.topbar {
+  /* background: #2563eb; Primary Blue */
+  padding: 16px 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.topbar nav {
+  display: flex;
+  gap: 20px;
+}
+
+.topbar nav a {
+  color: #e9edff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: 0.15s;
+}
+
+.topbar nav a:hover {
+  color: white;
+}
+
+.topbar button {
+  background: rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.15s;
+}
+
+.topbar button:hover {
+  background: white;
+  color: #0daf84;
+}
+
+/* -----------------------------------------
+   LAYOUT GRID
+----------------------------------------- */
+.container {
+  max-width: 1300px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 24px;
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
