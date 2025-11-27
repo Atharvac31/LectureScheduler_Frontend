@@ -42,7 +42,7 @@ export default function CourseList({ onSelect }) {
         {courses.map((c) => {
           const hasImage = Boolean(c.image);
           const imageUrl = hasImage
-            ? `http://localhost:5000/uploads/${c.image}`
+            ? `${import.meta.env.VITE_API_URL}/${c.image}`
             : null;
 
           return (
