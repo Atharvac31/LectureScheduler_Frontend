@@ -1,3 +1,4 @@
+// src/components/CourseList.jsx
 import React, { useEffect, useState } from "react";
 import API from "../api";
 
@@ -15,14 +16,12 @@ export default function CourseList({ onSelect }) {
     }
   }
 
-  // Initial load + dynamic search (debounced)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchCourses(q);
-    }, 300); // 300ms debounce
-
+    const timer = setTimeout(() => fetchCourses(q), 300);
     return () => clearTimeout(timer);
   }, [q]);
+
+  const apiBase = import.meta.env.VITE_API_URL; // e.g. https://lecturescheduler-backend.onrender.com
 
   return (
     <div className="card">
@@ -34,15 +33,13 @@ export default function CourseList({ onSelect }) {
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
-        {/* Optional: you can remove this button now */}
-        <button onClick={() => fetchCourses(q)}>Search</button>
       </div>
 
       <ul className="list">
         {courses.map((c) => {
           const hasImage = Boolean(c.image);
           const imageUrl = hasImage
-            ? `${import.meta.env.VITE_API_URL}/${c.image}`
+            ? `${apiBase}/uploads/${c.image}`  // 👈 FIX: add /uploads
             : null;
 
           return (
